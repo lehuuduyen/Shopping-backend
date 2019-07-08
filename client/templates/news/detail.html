@@ -73,41 +73,43 @@
 
             <!-- Comments
     ================================================== -->
-            <h3 class="headline">Comments <span class="comments-amount">(4)</span></h3><span class="line"></span>
+            <h3 class="headline">Comments <span class="comments-amount">({{new.comments.all|length}})</span></h3><span class="line"></span>
             <div class="clearfix"></div>
 
             <!-- Reviews -->
             <section class="comments">
 
                 <ul>
-                    {% for comment in new.comments.all %} {% if comment.sub_comment == 0%} {% endif %}
-
+                    {% for comment in new.comments.all %} {% if comment.sub_comment == 0%}
                     <li>
-                        <div class="avatar"><img src="{{base_url}}/media/{{comment.image}}" style="width:10%" alt="" /></div>
+                        <div class="avatar"><img src="{{base_url}}/media/{{comment.image}}" style="width: 90px;height:90px" alt="" /></div>
                         <div class="comment-content">
                             <div class="arrow-comment"></div>
                             <div class="comment-by"><strong>{{comment.name}}</strong><span class="date">{{comment.created_at}}</span>
-                                <span class="reply"><a href="#"><i class="fa fa-reply"></i> Reply</a></span>
+                                <!-- <span class="reply" onclick="click_reply({{comment.id}})" style="cursor: pointer"><i class="fa fa-reply"></i> Reply</span> -->
                             </div>
                             <p>{{comment.content}}</p>
                         </div>
-
                         <!-- Second Level -->
+                        {% for sub_comment in new.comments.all %} {% if sub_comment.sub_comment == comment.id %}
+
                         <ul>
                             <li>
-                                <div class="avatar"><img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=70" alt="" /></div>
+                                <div class="avatar"><img src="{{base_url}}/media/{{sub_comment.image}}" style="width: 75px;height:75px" alt="" /></div>
                                 <div class="comment-content">
                                     <div class="arrow-comment"></div>
-                                    <div class="comment-by"><strong>Vasterad</strong><span class="date">May 28, 2014</span>
-                                        <span class="reply"><a href="#"><i class="fa fa-reply"></i> Reply</a></span>
+                                    <div class="comment-by"><strong>{{sub_comment.name}}</strong><span class="date">{{sub_comment.created_at}}</span>
+                                        <!-- <span class="reply"><a href="#"><i class="fa fa-reply"></i> Reply</a></span> -->
                                     </div>
-                                    <p>Donec porttitor tortor sit amet tortor egestas, id suscipit magna cursus. Nam facilisis, mi vel elementum porttitor, sapien magna posuere lorem, sed consectetur.</p>
+                                    <p>{{sub_comment.content}}</p>
                                 </div>
                             </li>
                         </ul>
+                        {% endif %} {% endfor %}
+                        <!-- Second Level -->
 
                     </li>
-                    {% endfor%}
+                    {%endif%} {% endfor%}
 
 
 
@@ -127,27 +129,22 @@
             <div class="clearfix"></div>
 
             <!-- Add Comment Form -->
-            <form id="add-comment" class="add-comment">
+            <form id="add-comment" method="POST" action="" class="add-comment">
+                {% csrf_token %}
                 <fieldset>
-
-                    <div>
-                        <label>Name:</label>
-                        <input type="text" value="" />
-                    </div>
-
                     <div>
                         <label>Email: <span>*</span></label>
-                        <input type="text" value="" />
+                        <input type="text" name="email" value="" />
                     </div>
 
                     <div>
                         <label>Comment: <span>*</span></label>
-                        <textarea cols="40" rows="3"></textarea>
+                        <textarea cols="40" name="content" rows="3"></textarea>
                     </div>
 
                 </fieldset>
 
-                <a href="#" class="button color">Add Comment</a>
+                <button type="submit">Add Comment</button>
                 <div class="clearfix"></div>
 
             </form>

@@ -22,7 +22,9 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',client.index),
-    path('new/<int:id>/<str:path>/',client.new_detail)
+    path('new/<int:id>/<str:path>/',client.new_detail),
+    # path('category/<str:path>/',client.category),
+
 
 ]
 
